@@ -26,35 +26,38 @@ public class EnemyShootScript : MonoBehaviour
             // Every 1.5 seconds we try to shoot from each line
             yield return new WaitForSeconds(1.5f);
 
-            var chanceToShoot = Random.Range(0, 35 - currentGeneration);
-
-            // Depending on the number that falls, the right ship shoots
-            // 0 = first ship, 5 = sixth ship
-            if (chanceToShoot >= 0 && chanceToShoot <= 5 && transform.GetChild(chanceToShoot).tag == "Enemy")
+            if (currentGeneration > 0)
             {
-                findBullet = false;
-                i = 0;
+                var chanceToShoot = Random.Range(0, 35 - currentGeneration);
 
-                // Looking for an inactive bullet
-                while (!findBullet && i < BulletPool.Count)
+                // Depending on the number that falls, the right ship shoots
+                // 0 = first ship, 5 = sixth ship
+                if (chanceToShoot >= 0 && chanceToShoot <= 5 && transform.GetChild(chanceToShoot).tag == "Enemy")
                 {
-                    if (!BulletPool[i].activeInHierarchy)
-                    {
-                        BulletPool[i].transform.position = transform.GetChild(chanceToShoot).position;
-                        BulletPool[i].SetActive(true);
+                    findBullet = false;
+                    i = 0;
 
-                        findBullet = true;
+                    // Looking for an inactive bullet
+                    while (!findBullet && i < BulletPool.Count)
+                    {
+                        if (!BulletPool[i].activeInHierarchy)
+                        {
+                            BulletPool[i].transform.position = transform.GetChild(chanceToShoot).position;
+                            BulletPool[i].SetActive(true);
+
+                            findBullet = true;
+                        }
+
+                        i++;
                     }
 
-                    i++;
-                }
-
-                // If an inactive bullet was not found
-                if (!findBullet)
-                {
-                    var bullet = Instantiate(Resources.Load<GameObject>("EnemyBulletImage"), transform.GetChild(chanceToShoot));
-                    bullet.transform.position = transform.GetChild(chanceToShoot).position;
-                    BulletPool.Add(bullet);
+                    // If an inactive bullet was not found
+                    if (!findBullet)
+                    {
+                        var bullet = Instantiate(Resources.Load<GameObject>("EnemyBulletImage"), transform.GetChild(chanceToShoot));
+                        bullet.transform.position = transform.GetChild(chanceToShoot).position;
+                        BulletPool.Add(bullet);
+                    }
                 }
             }
         }
