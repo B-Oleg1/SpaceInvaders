@@ -4,7 +4,7 @@ public class EnemyBulletScript : MonoBehaviour
 {
     private void Update()
     {
-        // Если пуля улетела за экран
+        // If the bullet flew off the screen
         if (transform.position.y < -50)
         {
             gameObject.SetActive(false);
@@ -13,10 +13,10 @@ public class EnemyBulletScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        // Если пуля столкнулась с игроком
+        // If the bullet collided with the player
         if (collider.gameObject.tag == "Player")
         {
-            // Начисление очков
+            // Scoring points
             ControllGameScript.controllGameScript.HitPlayer();
 
             gameObject.SetActive(false);

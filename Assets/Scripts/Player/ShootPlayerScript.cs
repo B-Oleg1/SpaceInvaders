@@ -7,7 +7,7 @@ public class ShootPlayerScript : MonoBehaviour
     [SerializeField]
     private GameObject _shootPosition;
 
-    // Пул пуль, чтобы не создавать каждый раз новую пулю
+    // A pool of bullets, so as not to create a new bullet every time
     private List<GameObject> BulletPool;
 
     private void Start()
@@ -17,7 +17,7 @@ public class ShootPlayerScript : MonoBehaviour
         StartCoroutine(Shoot());
     }
 
-    // Бесконечные выстрелы
+    // Endless shots
     private IEnumerator Shoot()
     {
         bool findBullet = false;
@@ -30,8 +30,7 @@ public class ShootPlayerScript : MonoBehaviour
             findBullet = false;
             i = 0;
 
-            // Ищем неактивную пулю
-            // while - тк неизвестно кол-во итераций
+            // Looking for an inactive bullet
             while (!findBullet && i < BulletPool.Count)
             {
                 if (!BulletPool[i].activeInHierarchy)
@@ -45,7 +44,7 @@ public class ShootPlayerScript : MonoBehaviour
                 i++;
             }
 
-            // Если неактивную пулю не нашли
+            // If an inactive bullet was not found
             if (!findBullet)
             {
                 var bullet = Instantiate(Resources.Load<GameObject>("BulletImage"), transform);

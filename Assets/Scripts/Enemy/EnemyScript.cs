@@ -16,23 +16,25 @@ public class EnemyScript : MonoBehaviour
     {
         EnemyPool = new List<GameObject>();
 
-        // Закидываем в пул уже добавленные на сцену элементы
+        // Throwing the elements already added to the stage into the pool
         for (int i = 0; i < transform.childCount; i++)
         {
             EnemyPool.Add(transform.GetChild(i).gameObject);
         }
 
-        // Высота, на которую нужно будет сместить противников вниз
+        // The height to which it will be necessary to shift opponents down
         _rowHeight = transform.GetChild(0).GetComponent<RectTransform>().rect.height;
 
         StartCoroutine(SpawnNewEnemy());
     }
 
-    // Создаем противников бесконечно
+    // Endlessly creating opponents
     private IEnumerator SpawnNewEnemy()
     {
         while (true)
         {
+            // Movement to the side before the spawn of a new row
+
             yield return new WaitForSeconds(_timeToSpawn / 2);
 
             for (int i = 0; i < transform.childCount; i++)
@@ -57,7 +59,7 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
-    // Опустить объект ниже
+    // Lower the object below
     private void MakeObjectBelow()
     {
         for (int i = 0; i < transform.childCount; i++)
@@ -67,14 +69,13 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
-    // Спавним новую линию
+    // Spawn a new line
     private void SpawnEnemy()
     {
         bool findEnemy = false;
         int i = 0;
 
-        // Ищем неактивную пулю
-        // while - тк неизвестно кол-во итераций
+        // Looking for an inactive bullet
         while (!findEnemy && i < EnemyPool.Count)
         {
             if (!EnemyPool[i].activeInHierarchy)
@@ -101,7 +102,7 @@ public class EnemyScript : MonoBehaviour
             i++;
         }
 
-        // Если неактивную пулю не нашли
+        // If an inactive bullet was not found
         if (!findEnemy)
         {
             var enemy = Instantiate(Resources.Load<GameObject>("RowEnemiesObject"), transform);

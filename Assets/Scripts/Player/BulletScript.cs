@@ -14,7 +14,7 @@ public class BulletScript : MonoBehaviour
 
     private void Update()
     {
-        // Если пуля улетела за экран
+        // If the bullet flew off the screen
         if (transform.localPosition.y > Screen.height + 50)
         {
             gameObject.SetActive(false);
@@ -23,13 +23,13 @@ public class BulletScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Постоянное движение вверх с одинаковой скоростью
+        // Constant upward movement at the same speed
         _bulletRigidbody2D.velocity = new Vector2(0, _bulletSpeed);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        // Если пуля столкнулась с противником
+        // If the bullet collided with the enemy
         if (collider.gameObject.tag == "Enemy")
         {
             collider.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
@@ -40,7 +40,7 @@ public class BulletScript : MonoBehaviour
             alpha.a = 0;
             collider.gameObject.GetComponent<Image>().color = alpha;
 
-            // Начисление очков
+            // Scoring points
             ControllGameScript.controllGameScript.KillEnemy(transform);
 
             gameObject.SetActive(false);

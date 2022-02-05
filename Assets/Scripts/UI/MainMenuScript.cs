@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +13,7 @@ public class MainMenuScript : MonoBehaviour
 
     private void Start()
     {
-        // Загрузка рекорда, если он существует
+        // Loading a record, if it exists
         if (PlayerPrefs.HasKey("Record"))
         {
             _recordText.text = PlayerPrefs.GetInt("Record").ToString();
@@ -42,14 +40,14 @@ public class MainMenuScript : MonoBehaviour
         }
     }
 
-    // Вкл/Выкл звука
+    // On/Off sound
     public void OnChangeVolume()
     {
         if (_turnSound)
         {
             AudioListener.volume = 0;
 
-            // Смена цвета кнопки
+            // Button color change
             _volumeButton.GetComponent<Image>().color = Color.red;
             _volumeButton.transform.GetChild(0).GetComponent<Text>().text = "Выкл";
 
@@ -66,7 +64,7 @@ public class MainMenuScript : MonoBehaviour
         }
     }
 
-    // Выход из игры
+    // Exiting the game
     public void QuitGame()
     {
         Application.Quit();

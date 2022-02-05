@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyShootScript : MonoBehaviour
 {
-    // ѕоколение врага, нужно дл€ увеличени€ веро€тности выстрела
+    // Generation of the enemy, it is necessary to increase the probability of a shot
     public int currentGeneration = 0;
 
     private List<GameObject> BulletPool;
@@ -23,43 +23,38 @@ public class EnemyShootScript : MonoBehaviour
 
         while (true)
         {
-            //  аждые 1.5 секунды пытаемс€ выстрельнуть с каждой линии
+            // Every 1.5 seconds we try to shoot from each line
             yield return new WaitForSeconds(1.5f);
 
-            // ≈сли это не первое поколение
-            if (currentGeneration > 0)
+            var chanceToShoot = Random.Range(0, 35 - currentGeneration);
+
+            // Depending on the number that falls, the right ship shoots
+            // 0 = first ship, 5 = sixth ship
+            if (chanceToShoot >= 0 && chanceToShoot <= 5 && transform.GetChild(chanceToShoot).tag == "Enemy")
             {
-                var chanceToShoot = Random.Range(0, 35 - currentGeneration);
+                findBullet = false;
+                i = 0;
 
-                // ¬ зависимости от выпавшего числа, стрел€ет нужный корабль
-                // 0 = первый корабль, 5 = шестой корабль
-                if (chanceToShoot >= 0 && chanceToShoot <= 5 && transform.GetChild(chanceToShoot).tag == "Enemy")
+                // Looking for an inactive bullet
+                while (!findBullet && i < BulletPool.Count)
                 {
-                    findBullet = false;
-                    i = 0;
-
-                    // »щем неактивную пулю
-                    // while - тк неизвестно кол-во итераций
-                    while (!findBullet && i < BulletPool.Count)
+                    if (!BulletPool[i].activeInHierarchy)
                     {
-                        if (!BulletPool[i].activeInHierarchy)
-                        {
-                            BulletPool[i].transform.position = transform.GetChild(chanceToShoot).position;
-                            BulletPool[i].SetActive(true);
+                        BulletPool[i].transform.position = transform.GetChild(chanceToShoot).position;
+                        BulletPool[i].SetActive(true);
 
-                            findBullet = true;
-                        }
-
-                        i++;
+                        findBullet = true;
                     }
 
-                    // ≈сли неактивную пулю не нашли
-                    if (!findBullet)
-                    {
-                        var bullet = Instantiate(Resources.Load<GameObject>("EnemyBulletImage"), transform.GetChild(chanceToShoot));
-                        bullet.transform.position = transform.GetChild(chanceToShoot).position;
-                        BulletPool.Add(bullet);
-                    }
+                    i++;
+                }
+
+                // If an inactive bullet was not found
+                if (!findBullet)
+                {
+                    var bullet = Instantiate(Resources.Load<GameObject>("EnemyBulletImage"), transform.GetChild(chanceToShoot));
+                    bullet.transform.position = transform.GetChild(chanceToShoot).position;
+                    BulletPool.Add(bullet);
                 }
             }
         }
@@ -67,8 +62,8 @@ public class EnemyShootScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        // ≈сли патрон пролетел р€дом, то смотрим, жив ли хот€ бы один корабль текущей строчки
-        // ≈сли все убиты - готовим его к следующему спавну
+        // If the cartridge flew nearby, then we look to see if at least one ship of the current line is alive
+        // If everyone is killed, we prepare him for the next spawn
         if (collider.CompareTag("Bullet"))
         {
             bool _hasAlive = false;

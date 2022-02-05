@@ -30,7 +30,7 @@ public class MovePlayerScript : MonoBehaviour
         _direction = string.Empty;
     }
 
-    // ≈сли во врем€ нажати€ на кнопку курсор/палец перешел на другую сторону
+    // If the cursor/finger moved to the other side while pressing the button
     public void PointerEnter(string direction)
     {
         _direction = direction;
@@ -41,12 +41,12 @@ public class MovePlayerScript : MonoBehaviour
         _direction = string.Empty;
     }
 
-    // ѕередвижение игрока
+    // Player movement
     private void MovePlayer()
     {
         if (_direction == "Right")
         {
-            // ѕровер€ем, чтобы правый борт не улетел за пределы космоса
+            // We check that the starboard side does not fly out of space
             if (_player.transform.localPosition.x + _player.rect.width / 2 < Screen.width / 2)
             {
                 _player.transform.localPosition = new Vector2(_player.transform.localPosition.x + _speed, _player.transform.localPosition.y);

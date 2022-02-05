@@ -40,7 +40,7 @@ public class ControllGameScript : MonoBehaviour
         controllGameScript = this;
     }
 
-    // Если убили врага
+    // If you killed an enemy
     public void KillEnemy(Transform hitPos)
     {
         _supportMusic.Play();
@@ -52,10 +52,10 @@ public class ControllGameScript : MonoBehaviour
         _scoreText.text = $"СЧЕТ {_score.ToString()}";
     }
 
-    // Если корабль получил урон
+    // If the ship has received damage
     public void HitPlayer()
     {
-        // Если прошло 3 секунды после предыдущего хита
+        // If 3 seconds have passed since the previous hit
         if (_canHitPlayer)
         {
             _canHitPlayer = false;
@@ -72,7 +72,7 @@ public class ControllGameScript : MonoBehaviour
         }
     }
 
-    // Мигание корабля
+    // Flashing of the ship
     private IEnumerator FlashingOnHit()
     {
         for (int i = 0; i < 6; i++)
@@ -102,16 +102,16 @@ public class ControllGameScript : MonoBehaviour
         _canHitPlayer = true;
     }
 
-    // Когда игрока убили
+    // When the player was killed
     public void EndGame()
     {
-        // Заморозить сцену
+        // Freeze the scene
         Time.timeScale = 0f;
 
         _endPanel.SetActive(true);
         _endScoreText.text = _score.ToString();
 
-        // Сохранение рекорда
+        // Saving a record
         if (PlayerPrefs.GetInt("Record") < _score)
         {
             PlayerPrefs.SetInt("Record", _score);

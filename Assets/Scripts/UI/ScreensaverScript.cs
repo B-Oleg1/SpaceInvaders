@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ScreensaverScript : MonoBehaviour
@@ -9,7 +8,7 @@ public class ScreensaverScript : MonoBehaviour
         StartCoroutine(LoadMainMenu());
     }
 
-    // Через 3 секунды после входа в приложение меняем сцену
+    // 3 seconds after entering the application, change the scene
     private IEnumerator LoadMainMenu()
     {
         yield return new WaitForSeconds(3);
